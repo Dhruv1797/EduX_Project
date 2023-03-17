@@ -59,7 +59,8 @@ class _BroadcastScreenState extends State<BroadcastScreen> {
     _joinChannel();
   }
 
-  String baseUrl = "https://a1-live-streaming-app.herokuapp.com";
+  // String baseUrl = "https://a1-live-streaming-app.herokuapp.com";
+  String baseUrl = "https://live-streaming-server-production.up.railway.app";
 
   String token;
 
@@ -217,43 +218,50 @@ class _BroadcastScreenState extends State<BroadcastScreen> {
             desktopBody: Row(
               children: [
                 Expanded(
-                  child: Column(
-                    children: [
-                      _renderVideo(user, isScreenSharing),
-                      if ("${user.uid}${user.username}" == widget.channelId)
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: _switchCamera,
-                              child: const Text(
-                                'Switch Camera',
-                                style: TextStyle(
-                                    fontSize: 22.0, color: Colors.yellow),
-                              ),
+                  child: Container(
+                    height: 500,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _renderVideo(user, isScreenSharing),
+                          if ("${user.uid}${user.username}" == widget.channelId)
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InkWell(
+                                  onTap: _switchCamera,
+                                  child: const Text(
+                                    'Switch Camera',
+                                    style: TextStyle(
+                                        fontSize: 22.0, color: Colors.yellow),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: onToggleMute,
+                                  child: Text(
+                                    isMuted ? 'Unmute' : 'Mute',
+                                    style: TextStyle(
+                                        fontSize: 22.0, color: Colors.yellow),
+                                  ),
+                                ),
+                                // InkWell(
+                                //   onTap: isScreenSharing
+                                //       ? _stopScreenShare
+                                //       : _startScreenShare,
+                                //   child: Text(
+                                //     isScreenSharing
+                                //         ? 'Stop ScreenSharing'
+                                //         : 'Start Screensharing',
+                                //   ),
+                                // ),
+                              ],
                             ),
-                            InkWell(
-                              onTap: onToggleMute,
-                              child: Text(
-                                isMuted ? 'Unmute' : 'Mute',
-                                style: TextStyle(
-                                    fontSize: 22.0, color: Colors.yellow),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: isScreenSharing
-                                  ? _stopScreenShare
-                                  : _startScreenShare,
-                              child: Text(
-                                isScreenSharing
-                                    ? 'Stop ScreenSharing'
-                                    : 'Start Screensharing',
-                              ),
-                            ),
-                          ],
-                        ),
-                    ],
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 Chat(channelId: widget.channelId),
